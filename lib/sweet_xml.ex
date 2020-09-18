@@ -662,7 +662,13 @@ defmodule SweetXml do
 
   defp to_cast(value, false, _is_opt?), do: value
   defp to_cast(nil, _, true), do: nil
-  defp to_cast(value, :soft_boolean, _is_opt?), do: String.downcase(value) == "true"
+  defp to_cast(value, :soft_boolean, _is_opt?) do
+    if is_list(value) do
+      List.to_string(value).to_string |> String.downcase == "true"
+    else
+      String.downcase(value) == "true"
+    end
+  end
   defp to_cast(value, :string, _is_opt?), do: to_string(value)
   defp to_cast(value, :integer, _is_opt?), do: String.to_integer(to_string(value))
   defp to_cast(value, :float, _is_opt?) do
