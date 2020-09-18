@@ -201,6 +201,7 @@ defmodule SweetXml do
         ?I in modifiers -> :soft_integer
         ?f in modifiers -> :float
         ?F in modifiers -> :soft_float
+        ?b in modifiers -> :soft_boolean
         :otherwise -> false
       end
     }
@@ -661,6 +662,7 @@ defmodule SweetXml do
 
   defp to_cast(value, false, _is_opt?), do: value
   defp to_cast(nil, _, true), do: nil
+  defp to_cast(value, :soft_boolean, _is_opt?), do: String.downcase(value) == "true"
   defp to_cast(value, :string, _is_opt?), do: to_string(value)
   defp to_cast(value, :integer, _is_opt?), do: String.to_integer(to_string(value))
   defp to_cast(value, :float, _is_opt?) do
